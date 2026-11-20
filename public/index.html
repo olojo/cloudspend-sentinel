@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CloudSpend Sentinel detects Google Cloud cost anomalies before they become surprises." />
+    <title>CloudSpend Sentinel</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="CloudSpend Sentinel home">
+        <span class="brand-mark">CS</span>
+        <span>CloudSpend Sentinel</span>
+      </a>
+      <div class="live-indicator"><span></span> Portfolio demo</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">FINOPS CONTROL PLANE</p>
+          <h1>Catch cloud cost anomalies before they become bills.</h1>
+          <p class="hero-copy">Budget intelligence, service-level attribution, and an incident-ready remediation playbook for Google Cloud.</p>
+        </div>
+        <button id="simulate-button" class="primary-button">Simulate budget alert</button>
+      </section>
+
+      <section class="metrics" aria-label="Cost summary">
+        <article class="metric-card">
+          <p>Current spend</p>
+          <strong id="current-spend">—</strong>
+          <small id="budget-caption">Loading budget</small>
+        </article>
+        <article class="metric-card">
+          <p>Projected month</p>
+          <strong id="projected-spend">—</strong>
+          <small>Based on current daily average</small>
+        </article>
+        <article class="metric-card">
+          <p>Latest day</p>
+          <strong id="latest-spend">—</strong>
+          <small id="period-caption">Loading period</small>
+        </article>
+        <article class="metric-card alert-card">
+          <p>Anomalies</p>
+          <strong id="anomaly-count">—</strong>
+          <small>Services requiring investigation</small>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel service-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">COST ATTRIBUTION</p>
+              <h2>Spend by service</h2>
+            </div>
+            <span id="budget-status" class="status-pill">Loading</span>
+          </div>
+          <div id="service-list" class="service-list"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ANOMALY ENGINE</p>
+              <h2>Investigation queue</h2>
+            </div>
+          </div>
+          <div id="anomaly-list" class="stack-list"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">BUDGET EVENTS</p>
+              <h2>Recent alerts</h2>
+            </div>
+          </div>
+          <div id="alert-list" class="stack-list"></div>
+        </article>
+      </section>
+
+      <section class="architecture-callout">
+        <div>
+          <p class="eyebrow">DESIGNED FOR GOOGLE CLOUD</p>
+          <h2>Serverless, event-driven, and cost-aware by default.</h2>
+        </div>
+        <p>Cloud Billing → Pub/Sub → Cloud Run → BigQuery and Firestore → Cloud Monitoring</p>
+      </section>
+    </main>
+
+    <footer>Built as a production-style Google Cloud engineering portfolio project.</footer>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

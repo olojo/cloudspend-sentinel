@@ -1,0 +1,5 @@
+project_id             = "replace-with-your-project-id"
+region                 = "us-central1"
+monthly_budget_usd     = 2
+billing_account        = ""
+allow_public_dashboard = false

@@ -1,0 +1,41 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloudspend-sentinel/app:${SHORT_SHA}
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloudspend-sentinel/app:${SHORT_SHA}
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - cloudspend-sentinel
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloudspend-sentinel/app:${SHORT_SHA}
+      - --region=${_REGION}
+      - --platform=managed
+      - --service-account=${_RUNTIME_SERVICE_ACCOUNT}
+      - --min=0
+      - --max=1
+      - --cpu=1
+      - --memory=256Mi
+      - --concurrency=40
+      - --timeout=30s
+      - --no-allow-unauthenticated
+      - --quiet
+
+images:
+  - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/cloudspend-sentinel/app:${SHORT_SHA}
+
+substitutions:
+  _REGION: us-central1
+  _RUNTIME_SERVICE_ACCOUNT: cloudspend-runtime@${PROJECT_ID}.iam.gserviceaccount.com
+
+options:
+  logging: CLOUD_LOGGING_ONLY
