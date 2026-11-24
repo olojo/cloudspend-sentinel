@@ -3,95 +3,234 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="CloudSpend Sentinel detects Google Cloud cost anomalies before they become surprises." />
+    <meta
+      name="description"
+      content="CloudSpend Sentinel is a Google Cloud FinOps dashboard for cost attribution, anomaly detection, and budget-event response."
+    />
     <title>CloudSpend Sentinel</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <header class="topbar">
-      <a class="brand" href="/" aria-label="CloudSpend Sentinel home">
-        <span class="brand-mark">CS</span>
-        <span>CloudSpend Sentinel</span>
-      </a>
-      <div class="live-indicator"><span></span> Portfolio demo</div>
-    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#overview" aria-label="CloudSpend Sentinel overview">
+          <span class="brand-mark" aria-hidden="true">CS</span>
+          <span class="brand-copy">
+            <strong>CloudSpend</strong>
+            <small>Sentinel</small>
+          </span>
+        </a>
 
-    <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">FINOPS CONTROL PLANE</p>
-          <h1>Catch cloud cost anomalies before they become bills.</h1>
-          <p class="hero-copy">Budget intelligence, service-level attribution, and an incident-ready remediation playbook for Google Cloud.</p>
+        <nav class="primary-nav" aria-label="Dashboard sections">
+          <a class="nav-link active" href="#overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" /></svg>
+            <span>Overview</span>
+          </a>
+          <a class="nav-link" href="#spend">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9m5 10V5m6 14v-7m5 7V3" /></svg>
+            <span>Spend</span>
+          </a>
+          <a class="nav-link" href="#anomalies">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 20h18L12 3Zm0 6v5m0 3h.01" /></svg>
+            <span>Anomalies</span>
+          </a>
+          <a class="nav-link" href="#alerts">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4" /></svg>
+            <span>Budget alerts</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <p>Environment</p>
+          <div class="environment-row">
+            <span class="status-dot" aria-hidden="true"></span>
+            <div>
+              <strong>Portfolio demo</strong>
+              <small>Private Cloud Run</small>
+            </div>
+          </div>
+          <div class="version-row"><span>Data mode</span><strong>Synthetic</strong></div>
         </div>
-        <button id="simulate-button" class="primary-button">Simulate budget alert</button>
-      </section>
+      </aside>
 
-      <section class="metrics" aria-label="Cost summary">
-        <article class="metric-card">
-          <p>Current spend</p>
-          <strong id="current-spend">—</strong>
-          <small id="budget-caption">Loading budget</small>
-        </article>
-        <article class="metric-card">
-          <p>Projected month</p>
-          <strong id="projected-spend">—</strong>
-          <small>Based on current daily average</small>
-        </article>
-        <article class="metric-card">
-          <p>Latest day</p>
-          <strong id="latest-spend">—</strong>
-          <small id="period-caption">Loading period</small>
-        </article>
-        <article class="metric-card alert-card">
-          <p>Anomalies</p>
-          <strong id="anomaly-count">—</strong>
-          <small>Services requiring investigation</small>
-        </article>
-      </section>
-
-      <section class="dashboard-grid">
-        <article class="panel service-panel">
-          <div class="panel-heading">
-            <div>
-              <p class="eyebrow">COST ATTRIBUTION</p>
-              <h2>Spend by service</h2>
-            </div>
-            <span id="budget-status" class="status-pill">Loading</span>
+      <div class="workspace">
+        <header class="topbar">
+          <p class="breadcrumb"><span>CloudSpend</span><b>/</b><strong>Cost incident</strong></p>
+          <div class="topbar-actions">
+            <span id="generated-at" class="updated-at">Preparing analysis…</span>
+            <button id="export-button" class="secondary-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" /></svg>
+              Export CSV
+            </button>
           </div>
-          <div id="service-list" class="service-list"></div>
-        </article>
+        </header>
 
-        <article class="panel">
-          <div class="panel-heading">
+        <main>
+          <section id="overview" class="page-heading">
             <div>
-              <p class="eyebrow">ANOMALY ENGINE</p>
-              <h2>Investigation queue</h2>
+              <p class="eyebrow">COST INCIDENT OVERVIEW</p>
+              <h1>Cloud spend changed in the latest window</h1>
+              <p class="page-description">Trace the service, anomaly, and budget event behind the movement.</p>
             </div>
-          </div>
-          <div id="anomaly-list" class="stack-list"></div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-heading">
-            <div>
-              <p class="eyebrow">BUDGET EVENTS</p>
-              <h2>Recent alerts</h2>
+            <div class="heading-meta">
+              <span class="mode-pill"><span></span> Demo data</span>
+              <span class="period-pill">14-day view</span>
             </div>
-          </div>
-          <div id="alert-list" class="stack-list"></div>
-        </article>
-      </section>
+          </section>
 
-      <section class="architecture-callout">
-        <div>
-          <p class="eyebrow">DESIGNED FOR GOOGLE CLOUD</p>
-          <h2>Serverless, event-driven, and cost-aware by default.</h2>
-        </div>
-        <p>Cloud Billing → Pub/Sub → Cloud Run → BigQuery and Firestore → Cloud Monitoring</p>
-      </section>
-    </main>
+          <section class="metrics" aria-label="Cost summary">
+            <article class="metric-card">
+              <div class="metric-label">
+                <span>Observed spend</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 6.5c0-1.4-2-2.5-4.5-2.5S8 5.1 8 6.5 9.8 9 12.5 9 17 10.1 17 12s-2 3-4.5 3S8 13.9 8 12.5" /></svg>
+              </div>
+              <strong id="current-spend">—</strong>
+              <div class="metric-foot">
+                <small id="budget-caption">Loading budget</small>
+                <span class="micro-bars" aria-hidden="true">
+                  <i style="height:28%"></i><i style="height:36%"></i><i style="height:33%"></i><i style="height:44%"></i><i style="height:48%"></i><i style="height:62%"></i><i class="accent" style="height:84%"></i>
+                </span>
+              </div>
+            </article>
 
-    <footer>Built as a production-style Google Cloud engineering portfolio project.</footer>
+            <article class="metric-card">
+              <div class="metric-label">
+                <span>Projected month</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18 9 13l3 3 8-10M15 6h5v5" /></svg>
+              </div>
+              <strong id="projected-spend">—</strong>
+              <div class="metric-foot">
+                <small>Current daily average</small>
+                <span class="micro-bars" aria-hidden="true">
+                  <i style="height:38%"></i><i style="height:42%"></i><i style="height:40%"></i><i style="height:48%"></i><i style="height:52%"></i><i style="height:55%"></i><i style="height:72%"></i>
+                </span>
+              </div>
+            </article>
+
+            <article class="metric-card">
+              <div class="metric-label">
+                <span>Latest day</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2v3m12-3v3M3 9h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z" /></svg>
+              </div>
+              <strong id="latest-spend">—</strong>
+              <div class="metric-foot">
+                <small id="period-caption">Loading period</small>
+                <span class="micro-bars" aria-hidden="true">
+                  <i style="height:22%"></i><i style="height:26%"></i><i style="height:30%"></i><i style="height:34%"></i><i style="height:37%"></i><i style="height:48%"></i><i class="accent" style="height:92%"></i>
+                </span>
+              </div>
+            </article>
+
+            <article class="metric-card">
+              <div class="metric-label">
+                <span>Open anomalies</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 20h18L12 3Zm0 6v5m0 3h.01" /></svg>
+              </div>
+              <strong id="anomaly-count">—</strong>
+              <div class="metric-foot">
+                <small>Requires investigation</small>
+                <span class="signal-label"><i></i> Active signal</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="dashboard-grid">
+            <article id="spend" class="panel chart-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-kicker">SPEND TREND</p>
+                  <h2>Daily cloud cost</h2>
+                </div>
+                <div class="panel-stat"><span>Period total</span><strong id="chart-total">—</strong></div>
+              </div>
+              <div class="chart-wrap">
+                <div class="y-axis" aria-hidden="true"><span id="chart-max">—</span><span id="chart-mid">—</span><span>$0</span></div>
+                <svg id="spend-chart" viewBox="0 0 760 260" role="img" aria-label="Daily spending trend">
+                  <defs>
+                    <linearGradient id="area-fill" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#f27a3d" stop-opacity="0.2" />
+                      <stop offset="100%" stop-color="#f27a3d" stop-opacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <g class="chart-grid" aria-hidden="true">
+                    <line x1="18" y1="26" x2="742" y2="26" />
+                    <line x1="18" y1="126" x2="742" y2="126" />
+                    <line x1="18" y1="226" x2="742" y2="226" />
+                  </g>
+                  <path id="chart-area" class="chart-area" d="" />
+                  <path id="chart-line" class="chart-line" d="" />
+                  <g id="chart-points"></g>
+                </svg>
+              </div>
+              <div id="chart-axis" class="chart-axis" aria-hidden="true"></div>
+              <div class="chart-legend"><span><i class="legend-dot"></i>Total daily spend</span><span id="chart-note">Synthetic observations</span></div>
+            </article>
+
+            <article class="panel budget-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-kicker">BUDGET PULSE</p>
+                  <h2>Monthly guardrail</h2>
+                </div>
+                <span id="budget-status" class="status-pill">Loading</span>
+              </div>
+              <p class="budget-overline">Observed this period</p>
+              <div class="budget-number"><strong id="budget-spent">—</strong><span id="budget-total">/ —</span></div>
+              <div class="progress-track" aria-label="Budget used"><span id="budget-progress"></span></div>
+              <div class="progress-labels"><span id="budget-percent">— used</span><span id="budget-remaining">— remaining</span></div>
+              <dl class="budget-facts">
+                <div><dt>Data source</dt><dd>Synthetic</dd></div>
+                <div><dt>Alert route</dt><dd>Cloud Run API</dd></div>
+                <div><dt>Persistence</dt><dd>In memory</dd></div>
+              </dl>
+              <button id="simulate-button" class="primary-button" type="button">Run alert simulation</button>
+            </article>
+
+            <article class="panel service-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-kicker">COST ATTRIBUTION</p>
+                  <h2>Spend by service</h2>
+                </div>
+                <span id="service-count" class="quiet-pill">— services</span>
+              </div>
+              <div id="service-list" class="service-list"></div>
+            </article>
+
+            <article id="anomalies" class="panel anomaly-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-kicker">INVESTIGATION QUEUE</p>
+                  <h2>Priority anomaly</h2>
+                </div>
+                <span class="priority-pill">High priority</span>
+              </div>
+              <div id="anomaly-list" class="anomaly-list"></div>
+            </article>
+
+            <article id="alerts" class="panel alerts-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="panel-kicker">BUDGET EVENTS</p>
+                  <h2>Recent alerts</h2>
+                </div>
+                <span class="quiet-pill">Newest first</span>
+              </div>
+              <div class="alert-table-head" aria-hidden="true"><span>Event</span><span>Spend</span><span>Source</span><span>Received</span></div>
+              <div id="alert-list" class="alert-list"></div>
+            </article>
+          </section>
+
+          <section class="system-strip" aria-label="Deployment status">
+            <div><span class="status-dot"></span><strong>Service healthy</strong><small>Authenticated Cloud Run deployment</small></div>
+            <div><span>Region</span><strong>us-central1</strong></div>
+            <div><span>Scaling</span><strong>0–1 instance</strong></div>
+            <div><span>Runtime</span><strong>Node.js 22</strong></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
     <div id="toast" role="status" aria-live="polite"></div>
     <script type="module" src="/app.js"></script>
   </body>
